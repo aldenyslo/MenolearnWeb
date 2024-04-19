@@ -1,4 +1,4 @@
-import ChatHistoryCard from "./ChatHistoryCard"
+import ChatHistoryCard from "@/components/ChatHistoryCard"
 import { ChatHistoryItem } from "@/interfaces"
 
 const ChatHistoryList = ({
