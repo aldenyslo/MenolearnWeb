@@ -1,7 +1,7 @@
 import Image from "next/image"
 const Header = () => {
   return (
-    <header className="w-[390px] border border-b-0 bg-white text-primary-500 p-4 flex justify-between items-center">
+    <header className="w-[390px] border border-b-black bg-white text-primary-500 p-4 pb-2 flex justify-between items-center">
       <div className="flex items-center gap-3">
         <button>
           <Image

@@ -24,6 +24,9 @@ const config: Config = {
         },
         secondary: {
           600: "#321C1C",
+          200: "#FFFCF9",
+          400: "#D9D9D9",
+          300: "#EEEEEE",
         },
       },
       fontFamily: {
