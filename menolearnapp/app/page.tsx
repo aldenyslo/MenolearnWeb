@@ -1,3 +1,4 @@
+import NewChatBtn from "@/components/NewChatBtn"
 import ChatHistoryList from "../components/ChatHistoryList"
 import { ChatHistoryItem } from "@/interfaces"
 
@@ -24,6 +25,7 @@ export default function Home() {
       title: "Trouble Sleeping",
     },
   ]
+
   return (
     <main className="font-inter overflow-auto w-[390px] h-[812px] border border-t-0 bg-secondary-200">
       <section className="bg-primary-500 text-white grid items-center px-5 pb-6 pt-12 gap-4">
@@ -37,14 +39,7 @@ export default function Home() {
             their unique menopausal experience.
           </p>
         </div>
-        <div className="">
-          <a
-            href="/chat"
-            className="font-bold text-primary-400 bg-secondary-200 px-4 py-3 block text-center rounded-2xl mx-16"
-          >
-            Chat with MenoLearn
-          </a>
-        </div>
+        <NewChatBtn />
       </section>
       <section className="p-5 grid gap-6">
         <h2 className="font-volkhov text-2xl text-secondary-600">

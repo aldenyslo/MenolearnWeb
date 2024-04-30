@@ -7,6 +7,7 @@ import {
 import "./globals.css"
 
 import Header from "@/components/Header"
+import Providers from "@/components/Providers"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,12 +39,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${volkhov.variable} ${josefin_sans.variable} bg-white grid justify-center mx-auto my-4 ${inter.variable}`}
-      >
-        <Header />
-        {children}
-      </body>
+      <Providers>
+        <body
+          className={`${volkhov.variable} ${josefin_sans.variable} bg-white grid justify-center mx-auto my-4 ${inter.variable}`}
+        >
+          <Header />
+          {children}
+        </body>
+      </Providers>
     </html>
   )
 }

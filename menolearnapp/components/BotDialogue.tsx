@@ -10,7 +10,7 @@ const BotDialogue = ({
   return (
     <div className="flex items-start gap-2.5">
       <Image
-        src="MenoLearnLogo.svg"
+        src="/MenoLearnLogo.svg"
         width="24"
         height="24"
         alt="MenoLearn"

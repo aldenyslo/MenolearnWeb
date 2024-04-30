@@ -1,4 +1,5 @@
 import { ChatHistoryItem } from "@/interfaces"
+import Link from "next/link"
 
 const ChatHistoryCard = ({
   id,
@@ -10,9 +11,9 @@ const ChatHistoryCard = ({
       <div className="grid gap-3 p-2">
         <p className="text-xs">{date}</p>
         <p className="font-volkhov text-lg">{title}</p>
-        <a className="text-primary-400" href="/">
+        <Link className="text-primary-400" href="/">
           View Chat
-        </a>
+        </Link>
       </div>
       <button className="text-primary-400 border-black border-l p-4 w-[33%]">
         Download Summary

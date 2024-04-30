@@ -5,31 +5,83 @@ import {
   useForm,
   SubmitHandler,
 } from "react-hook-form"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { useParams } from "next/navigation"
+import { useMutation } from "@tanstack/react-query"
+import { MessagesContext } from "@/context/messages"
+import { Message, Source } from "@prisma/client"
 
 interface ChatInputMsg {
   message: string
 }
 
+interface Msg {
+  id: string
+  message: string
+  source: Source
+}
+
 const ChatInput = () => {
   const [typed, setTyped] = useState(false)
+  const { messages, addMessage, removeMessage } =
+    useContext(MessagesContext)
+  const params = useParams()
 
   const { register, handleSubmit, reset } =
     useForm<ChatInputMsg>()
 
-  const onSubmit: SubmitHandler<ChatInputMsg> = (
+  const onSubmit: SubmitHandler<ChatInputMsg> = async (
     data
   ) => {
+    try {
+      const res = await fetch(
+        `/api/chats/${params.chatId}/messages`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            source: "USER",
+            message: data.message,
+          }),
+        }
+      ).then((res) => res.json())
+      addMessage({
+        id: res.id,
+        message: res.message,
+        source: res.source,
+      })
+    } catch (err) {
+      console.error("cannot post user msg")
+    }
+
+    try {
+      const res = await fetch(
+        `/api/chats/${params.chatId}/messages`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            source: "BOT",
+            message: data.message,
+          }),
+        }
+      ).then((res) => res.json())
+      addMessage({
+        id: res.id,
+        message: res.message,
+        source: res.source,
+      })
+    } catch (err) {
+      console.error("cannot post bot msg")
+    }
+
     reset()
-    console.log(data)
-    setTyped(false) // to update with API / database
+    setTyped(false)
   }
 
   return (
-    <div className="p-5 flex items-center gap-3 w-[100%] absolute bottom-0">
+    <div className="p-5 flex items-center border bg-secondary-200 gap-3 w-full">
       <button>
         <Image
-          src="fileIcon.svg"
+          src="/fileIcon.svg"
           width="20"
           height="20"
           alt="file"
@@ -54,14 +106,14 @@ const ChatInput = () => {
         <button type="submit">
           {typed ? (
             <Image
-              src="sendEnabled.svg"
+              src="/sendEnabled.svg"
               width="26"
               height="26"
               alt="send"
             />
           ) : (
             <Image
-              src="sendDisabled.svg"
+              src="/sendDisabled.svg"
               width="26"
               height="26"
               alt="send"
