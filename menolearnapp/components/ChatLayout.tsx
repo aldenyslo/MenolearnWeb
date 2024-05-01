@@ -11,7 +11,7 @@ const ChatLayout = () => {
   const { messages } = useContext(MessagesContext)
 
   return (
-    <div className="flex flex-col gap-5 px-8 py-7 border border-black flex-1 overflow-y-auto">
+    <div className="flex flex-col gap-5 px-8 py-7 flex-1 overflow-y-auto">
       {messages.map((val, idx) =>
         val.source == "BOT" ? (
           <BotDialogue
