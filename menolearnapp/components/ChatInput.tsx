@@ -53,6 +53,9 @@ const ChatInput = () => {
       console.error("cannot post user msg")
     }
 
+    reset()
+    setTyped(false)
+
     try {
       const res = await fetch(
         `/api/chats/${params.chatId}/messages`,
@@ -72,9 +75,6 @@ const ChatInput = () => {
     } catch (err) {
       console.error("cannot post bot msg")
     }
-
-    reset()
-    setTyped(false)
   }
 
   return (
