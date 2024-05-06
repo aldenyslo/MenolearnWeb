@@ -1,18 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import {
-  useForm,
-  SubmitHandler,
-} from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { Source } from "@prisma/client"
-
-interface ChatInput {
-  input: string
-}
+import { zodResolver } from "@hookform/resolvers/zod"
+import {
+  chatInputSchema,
+  chatInputType,
+} from "@/lib/types"
 
 const ChatInput = () => {
   const [typed, setTyped] = useState(false)
@@ -21,7 +19,9 @@ const ChatInput = () => {
   const router = useRouter()
 
   const { register, handleSubmit, reset } =
-    useForm<ChatInput>()
+    useForm<chatInputType>({
+      resolver: zodResolver(chatInputSchema),
+    })
 
   const messageMutation = useMutation({
     mutationFn: ({
@@ -47,9 +47,7 @@ const ChatInput = () => {
     },
   })
 
-  const onSubmit: SubmitHandler<ChatInput> = async (
-    data
-  ) => {
+  const onSubmit = async (data: chatInputType) => {
     if (!data.input) {
       return null
     }

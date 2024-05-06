@@ -1,4 +1,5 @@
 "use client"
+import { Chat } from "@prisma/client"
 import { useMutation } from "@tanstack/react-query"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -15,7 +16,7 @@ const NewChatBtn = () => {
         }),
       }).then((res) => res.json())
     },
-    onSuccess: (res) => {
+    onSuccess: (res: Chat) => {
       router.push(`/chats/${res.id}`)
     },
   })

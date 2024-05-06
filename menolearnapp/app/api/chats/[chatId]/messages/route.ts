@@ -1,6 +1,7 @@
 import prismadb from "@/lib/prismadb"
 import { NextResponse } from "next/server"
 import { useQuery } from "@tanstack/react-query"
+import { messageSourcedSchema } from "@/lib/types"
 
 const getBotResponse = async (input: String) => {
   const apiKey = process.env.OPENAI_APIKEY
@@ -44,10 +45,17 @@ export async function POST(
 ) {
   const body = await req.json()
 
-  const { source, message } = body
+  const result = messageSourcedSchema.safeParse(body)
+
+  if (!result.success) {
+    return console.error("invalid message or source")
+  }
+
+  const { source, message } = result.data
+
+  let msg
 
   try {
-    let msg
     if (source === "USER") {
       msg = await prismadb.message.create({
         data: {
