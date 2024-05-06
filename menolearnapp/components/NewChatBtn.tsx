@@ -1,26 +1,29 @@
 "use client"
+import { useMutation } from "@tanstack/react-query"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 const NewChatBtn = () => {
   const router = useRouter()
 
-  const handleNewChat = async () => {
-    try {
-      const res = await fetch("/api/chats", {
+  const chatMutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/chats`, {
         method: "POST",
-        body: JSON.stringify({ userId: "1" }), // to update with auth
+        body: JSON.stringify({
+          userId: "1", // to update with auth
+        }),
       }).then((res) => res.json())
-
+    },
+    onSuccess: (res) => {
       router.push(`/chats/${res.id}`)
-    } catch (err) {
-      console.error("new chat cannot be created")
-    }
-  }
+    },
+  })
+
   return (
     <div className="">
       <Link
-        onClick={handleNewChat}
+        onClick={() => chatMutation.mutate()}
         href="/"
         className="font-bold text-primary-400 bg-secondary-200 px-4 py-3 block text-center rounded-2xl mx-16"
       >

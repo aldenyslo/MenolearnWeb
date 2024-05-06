@@ -5,76 +5,67 @@ import {
   useForm,
   SubmitHandler,
 } from "react-hook-form"
-import { useContext, useState } from "react"
-import { useParams } from "next/navigation"
+import { useState } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
-import { MessagesContext } from "@/context/messages"
-import { Message, Source } from "@prisma/client"
+import { Source } from "@prisma/client"
 
-interface ChatInputMsg {
-  message: string
-}
-
-interface Msg {
-  id: string
-  message: string
-  source: Source
+interface ChatInput {
+  input: string
 }
 
 const ChatInput = () => {
   const [typed, setTyped] = useState(false)
-  const { messages, addMessage, removeMessage } =
-    useContext(MessagesContext)
+
   const params = useParams()
+  const router = useRouter()
 
   const { register, handleSubmit, reset } =
-    useForm<ChatInputMsg>()
+    useForm<ChatInput>()
 
-  const onSubmit: SubmitHandler<ChatInputMsg> = async (
-    data
-  ) => {
-    try {
-      const res = await fetch(
+  const messageMutation = useMutation({
+    mutationFn: ({
+      input,
+      source,
+    }: {
+      input: string
+      source: Source
+    }) => {
+      return fetch(
         `/api/chats/${params.chatId}/messages`,
         {
           method: "POST",
           body: JSON.stringify({
-            source: "USER",
-            message: data.message,
+            source,
+            message: input,
           }),
         }
-      ).then((res) => res.json())
-      addMessage({
-        id: res.id,
-        message: res.message,
-        source: res.source,
-      })
-    } catch (err) {
-      console.error("cannot post user msg")
+      )
+    },
+    onSuccess: () => {
+      router.refresh()
+    },
+  })
+
+  const onSubmit: SubmitHandler<ChatInput> = async (
+    data
+  ) => {
+    if (!data.input) {
+      return null
     }
+
+    messageMutation.mutate({
+      input: data.input,
+      source: "USER",
+    })
 
     reset()
     setTyped(false)
 
-    try {
-      const res = await fetch(
-        `/api/chats/${params.chatId}/messages`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            source: "BOT",
-            message: data.message,
-          }),
-        }
-      ).then((res) => res.json())
-      addMessage({
-        id: res.id,
-        message: res.message,
-        source: res.source,
-      })
-    } catch (err) {
-      console.error("cannot post bot msg")
-    }
+    messageMutation.mutate({
+      input: data.input,
+      source: "BOT",
+    })
   }
 
   return (
@@ -92,7 +83,7 @@ const ChatInput = () => {
         className="flex items-center gap-3 grow"
       >
         <input
-          {...register("message", {
+          {...register("input", {
             onChange: (e) => {
               e.target.value === ""
                 ? setTyped(false)

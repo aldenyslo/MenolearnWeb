@@ -1,6 +1,5 @@
 "use client"
 
-import { MessagesProvider } from "@/context/messages"
 import {
   QueryClient,
   QueryClientProvider,
@@ -16,7 +15,7 @@ const Providers = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MessagesProvider>{children}</MessagesProvider>
+      {children}
     </QueryClientProvider>
   )
 }
