@@ -27,7 +27,7 @@ export default function Home() {
   ]
 
   return (
-    <main className="font-inter overflow-auto w-[390px] h-[812px] border border-t-0 bg-secondary-200">
+    <main className="font-inter overflow-auto w-[390px] h-[670px] border border-t-0 bg-secondary-200">
       <section className="bg-primary-500 text-white grid items-center px-5 pb-6 pt-12 gap-4">
         <div className="grid gap-3.5">
           <h1 className="font-volkhov font-bold text-2xl">
