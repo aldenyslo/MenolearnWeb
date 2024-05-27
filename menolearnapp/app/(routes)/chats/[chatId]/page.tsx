@@ -23,7 +23,7 @@ const Chat = async ({
   }
 
   return (
-    <main className="h-screen flex flex-col">
+    <main className="h-screen flex flex-col p-9 py-8 gap-5">
       <h1 className="text-lg font-semibold text-center">
         MenoLearn
       </h1>

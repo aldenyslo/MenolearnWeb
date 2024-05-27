@@ -68,7 +68,7 @@ const ChatInput = () => {
   }
 
   return (
-    <div className="p-5 flex items-center gap-3 w-full">
+    <div className="flex items-center gap-3 w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center gap-3 grow"

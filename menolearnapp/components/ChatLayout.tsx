@@ -8,7 +8,7 @@ const ChatLayout = async (props: {
   const messages = await getChatMessages(props.chatId)
 
   return (
-    <div className="flex flex-col gap-5 px-8 py-7 flex-1 overflow-y-auto">
+    <div className="flex flex-col gap-5 flex-1 overflow-y-auto">
       {messages.map((val, idx) =>
         val.source == "BOT" ? (
           <BotDialogue
