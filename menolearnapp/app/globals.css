@@ -11,5 +11,8 @@
 @media (prefers-color-scheme: dark) {
 }
 
-body {
+html,
+body,
+:root {
+  height: 100%;
 }

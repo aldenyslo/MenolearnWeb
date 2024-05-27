@@ -1,15 +1,32 @@
+import { auth } from "@/auth"
 import ChatInput from "@/components/ChatInput"
 import ChatLayout from "@/components/ChatLayout"
+import { getUserIdByChatId } from "@/server/queries"
+import { signIn } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 export const dynamic = "force-dynamic"
 
-const Chat = ({
+const Chat = async ({
   params: { chatId },
 }: {
   params: { chatId: string }
 }) => {
+  const session = await auth()
+  const chatOwnerId = await getUserIdByChatId(chatId)
+  if (
+    !session ||
+    !session.user ||
+    chatOwnerId?.userId != session.user.id
+  ) {
+    redirect("/auth/signin")
+  }
+
   return (
-    <main className="bg-secondary-200 relative font-inter flex flex-col w-[390px] h-[670px] border border-t-0">
+    <main className="h-screen flex flex-col">
+      <h1 className="text-lg font-semibold text-center">
+        MenoLearn
+      </h1>
       <ChatLayout chatId={chatId} />
       <ChatInput />
     </main>

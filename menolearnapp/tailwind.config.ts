@@ -28,14 +28,23 @@ const config: Config = {
           400: "#D9D9D9",
           300: "#EEEEEE",
         },
+        grey: {
+          100: "#F4F8FF",
+        },
+        blue: {
+          100: "#8DC2FF",
+          200: "#6EABF4",
+          300: "#65AAFA",
+          400: "#45618E",
+          800: "#182B49",
+        },
+        purple: {
+          200: "#CAC0F2",
+          400: "#6A6CDE",
+        },
       },
       fontFamily: {
-        volkhov: ["var(--font-volkhov)", "serif"],
-        josefin_sans: [
-          "var(--font-josefin-sans)",
-          "sans-serif",
-        ],
-        inter: ["var(--font-inter)", "sans-serif"],
+        poppins: ["var(--font-poppins)", "sans-serif"],
       },
     },
   },

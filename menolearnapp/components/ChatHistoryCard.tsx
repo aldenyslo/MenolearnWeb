@@ -1,4 +1,4 @@
-import { ChatHistoryItem } from "@/interfaces"
+import { ChatHistoryItem } from "@/server/interfaces"
 import Link from "next/link"
 
 const ChatHistoryCard = ({

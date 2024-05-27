@@ -13,3 +13,27 @@ export async function getChatMessages(chatId: string) {
   })
   return messages
 }
+
+export async function getUserByEmail(email: string) {
+  const user = await prismadb.user.findUnique({
+    where: {
+      email,
+    },
+  })
+
+  return user
+}
+
+export async function getUserIdByChatId(
+  chatId: string
+) {
+  const userId = await prismadb.chat.findUnique({
+    where: {
+      id: chatId,
+    },
+    select: {
+      userId: true,
+    },
+  })
+  return userId
+}

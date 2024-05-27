@@ -11,16 +11,12 @@ const BotDialogue = ({
     <div className="flex items-start gap-2.5">
       <Image
         src="/MenoLearnLogo.svg"
-        width="24"
-        height="24"
+        width="28"
+        height="28"
         alt="MenoLearn"
       />
-      <div>
-        <p className="text-primary-500 font-bold">
-          MenoLearn
-        </p>
-        <p className="">{response}</p>
-      </div>
+
+      <p className="">{response}</p>
     </div>
   )
 }

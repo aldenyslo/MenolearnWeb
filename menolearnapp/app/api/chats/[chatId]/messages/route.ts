@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb"
 import { NextResponse } from "next/server"
 import { useQuery } from "@tanstack/react-query"
-import { messageSourcedSchema } from "@/lib/types"
+import { messageSourcedSchema } from "@/lib/schemas"
 
 const getBotResponse = async (input: String) => {
   const apiKey = process.env.OPENAI_APIKEY

@@ -12,3 +12,14 @@ export const messageSourcedSchema = z.object({
   message: z.string().max(1000),
   source: z.enum(["USER", "BOT"]),
 })
+
+export const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+})
+
+export const RegisterSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string().min(8),
+})

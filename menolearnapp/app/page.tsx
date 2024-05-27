@@ -1,8 +1,10 @@
 import NewChatBtn from "@/components/NewChatBtn"
 import ChatHistoryList from "../components/ChatHistoryList"
-import { ChatHistoryItem } from "@/interfaces"
+import { ChatHistoryItem } from "@/server/interfaces"
+import { auth, signIn } from "@/auth"
+import { redirect } from "next/navigation"
 
-export default function Home() {
+export default async function Home() {
   const chatHistoryMock: ChatHistoryItem[] = [
     {
       id: 1,
@@ -26,6 +28,13 @@ export default function Home() {
     },
   ]
 
+  const session = await auth()
+
+  console.log({ session })
+  if (!session || !session.user) {
+    redirect("/auth/signin")
+  }
+
   return (
     <main className="font-inter overflow-auto w-[390px] h-[670px] border border-t-0 bg-secondary-200">
       <section className="bg-primary-500 text-white grid items-center px-5 pb-6 pt-12 gap-4">
@@ -39,7 +48,7 @@ export default function Home() {
             their unique menopausal experience.
           </p>
         </div>
-        <NewChatBtn />
+        <NewChatBtn user={session.user} />
       </section>
       <section className="p-5 grid gap-6">
         <h2 className="font-volkhov text-2xl text-secondary-600">

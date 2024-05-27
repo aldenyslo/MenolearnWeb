@@ -1,5 +1,5 @@
 import ChatHistoryCard from "@/components/ChatHistoryCard"
-import { ChatHistoryItem } from "@/interfaces"
+import { ChatHistoryItem } from "@/server/interfaces"
 
 const ChatHistoryList = ({
   chatHistory,

@@ -3,27 +3,17 @@ import {
   Inter,
   Volkhov,
   Josefin_Sans,
+  Poppins,
 } from "next/font/google"
 import "./globals.css"
 
 import Header from "@/components/Header"
 import Providers from "@/components/Providers"
 
-const inter = Inter({
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-inter",
-})
-
-const volkhov = Volkhov({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  variable: "--font-volkhov",
-})
-
-const josefin_sans = Josefin_Sans({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-josefin-sans",
+  variable: "--font-poppins",
 })
 
 export const metadata: Metadata = {
@@ -41,9 +31,8 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body
-          className={`${volkhov.variable} ${josefin_sans.variable} bg-white grid justify-center mx-auto my-4 ${inter.variable}`}
+          className={`${poppins.variable} bg-white font-poppins text-blue-800 bg-gradient-to-b from-grey-100 from-60% to-blue-100 to-100%`}
         >
-          <Header />
           {children}
         </body>
       </Providers>
