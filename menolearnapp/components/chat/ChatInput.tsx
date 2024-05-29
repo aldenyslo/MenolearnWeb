@@ -1,69 +1,53 @@
 "use client"
 
+import * as z from "zod"
+
 import Image from "next/image"
 import { useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { Source } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { chatInputSchema } from "@/lib/schemas"
 import {
-  chatInputSchema,
-  chatInputType,
-} from "@/lib/schemas"
+  chatComplete,
+  chatInput,
+} from "@/server/actions"
 
 const ChatInput = () => {
   const params = useParams()
-  const router = useRouter()
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { isDirty },
-  } = useForm<chatInputType>({
+  } = useForm<z.infer<typeof chatInputSchema>>({
     resolver: zodResolver(chatInputSchema),
     defaultValues: { input: "" },
   })
 
-  const messageMutation = useMutation({
-    mutationFn: ({
-      input,
-      source,
-    }: {
-      input: string
-      source: Source
-    }) => {
-      return fetch(
-        `/api/chats/${params.chatId}/messages`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            source,
-            message: input,
-          }),
-        }
-      )
-    },
-    onSuccess: () => {
-      router.refresh()
-    },
-  })
+  if (typeof params.chatId != "string") {
+    throw new Error("invalid chat id")
+  }
 
-  const onSubmit = async (data: chatInputType) => {
-    if (!data.input) {
-      return null
-    }
+  const chatId = params.chatId
 
-    messageMutation.mutate({
-      input: data.input,
-      source: "USER",
+  const onSubmit = async (
+    data: z.infer<typeof chatInputSchema>
+  ) => {
+    console.log(data)
+
+    await chatInput({
+      message: data.input,
+      chatId,
     })
 
     reset()
 
-    messageMutation.mutate({
-      input: data.input,
-      source: "BOT",
+    await chatComplete({
+      message: data.input,
+      chatId,
     })
   }
 

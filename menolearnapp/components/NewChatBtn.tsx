@@ -1,4 +1,5 @@
 "use client"
+import { createNewChat } from "@/server/actions"
 import { Chat } from "@prisma/client"
 import { useMutation } from "@tanstack/react-query"
 import { Session, User } from "next-auth"

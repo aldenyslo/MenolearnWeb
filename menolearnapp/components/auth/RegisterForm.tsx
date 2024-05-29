@@ -7,7 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { RegisterSchema } from "@/lib/schemas"
 import { registerAction } from "@/server/actions"
-import { AuthOther } from "./AuthOther"
+import { AuthOther } from "@/components/auth/AuthOther"
+import { redirect } from "next/navigation"
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition()

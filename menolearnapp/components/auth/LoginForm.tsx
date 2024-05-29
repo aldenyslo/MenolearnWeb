@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { LoginSchema } from "@/lib/schemas"
 import { login } from "@/server/actions"
-import { AuthOther } from "./AuthOther"
+import { AuthOther } from "@/components/auth/AuthOther"
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition()

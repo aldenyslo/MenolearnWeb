@@ -11,7 +11,7 @@ import Header from "@/components/Header"
 import Providers from "@/components/Providers"
 
 const poppins = Poppins({
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-poppins",
 })
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body
-          className={`${poppins.variable} bg-white font-poppins text-blue-800 bg-gradient-to-b from-grey-100 from-60% to-blue-100 to-100%`}
+          className={`${poppins.variable} bg-white scroll-smooth font-poppins text-blue-800 bg-gradient-to-b from-grey-100 from-60% to-blue-100 to-100%`}
         >
           {children}
         </body>
