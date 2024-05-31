@@ -1,45 +1,37 @@
 import NewChatBtn from "@/components/NewChatBtn"
 import ChatHistoryList from "../components/ChatHistoryList"
-import { ChatHistoryItem } from "@/server/interfaces"
-import { auth, signIn } from "@/auth"
+import { auth, signIn, signOut } from "@/auth"
 import { redirect } from "next/navigation"
+import { getChatsByUserId } from "@/server/queries"
 
 export default async function Home() {
-  const chatHistoryMock: ChatHistoryItem[] = [
-    {
-      id: 1,
-      date: "2024-04-17",
-      title: "Hot Flashes",
-    },
-    {
-      id: 2,
-      date: "2024-04-16",
-      title: "Night Sweats",
-    },
-    {
-      id: 3,
-      date: "2024-04-15",
-      title: "Trouble Sleeping",
-    },
-    {
-      id: 3,
-      date: "2024-04-15",
-      title: "Trouble Sleeping",
-    },
-  ]
-
   const session = await auth()
 
   console.log({ session })
-  if (!session || !session.user) {
+  if (!session || !session.user || !session.user.id) {
     redirect("/auth/signin")
   }
 
+  const chatHistory = await getChatsByUserId(
+    session.user.id
+  )
+
   return (
-    <main className="font-inter overflow-auto w-[390px] h-[670px] border border-t-0 bg-secondary-200">
+    <main className="bg-gradient-to-b h-screen">
+      <header>
+        <form
+          action={async () => {
+            "use server"
+
+            await signOut()
+          }}
+        >
+          <button type="submit">Sign out</button>
+        </form>
+      </header>
       <section className="bg-primary-500 text-white grid items-center px-5 pb-6 pt-12 gap-4">
         <div className="grid gap-3.5">
-          <h1 className="font-volkhov font-bold text-2xl">
+          <h1 className="font-bold text-2xl">
             We know menopause is confusing.
           </h1>
           <p className="">
@@ -50,13 +42,11 @@ export default async function Home() {
         </div>
         <NewChatBtn user={session.user} />
       </section>
-      <section className="p-5 grid gap-6">
-        <h2 className="font-volkhov text-2xl text-secondary-600">
+      <section className="p-5 grid gap-6 ">
+        <h2 className=" text-2xl text-secondary-600">
           Chat History
         </h2>
-        <ChatHistoryList
-          chatHistory={chatHistoryMock}
-        />
+        <ChatHistoryList chatHistory={chatHistory} />
       </section>
     </main>
   )

@@ -16,6 +16,7 @@ const NewChatBtn = ({ user }: { user: User }) => {
         method: "POST",
         body: JSON.stringify({
           userId: user.id,
+          newChat: true,
         }),
       }).then((res) => res.json())
     },

@@ -54,6 +54,7 @@ export const { handlers, signIn, signOut, auth } =
     providers,
     pages: {
       signIn: "/auth/signin",
+      signOut: "/auth/signin",
     },
     callbacks: {
       session: ({ session, token }) => ({

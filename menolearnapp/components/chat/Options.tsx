@@ -3,11 +3,16 @@ import {
   chatComplete,
   chatInput,
   completeChatInteraction,
+  setChatTitle,
 } from "@/server/actions"
 import { revalidateTag } from "next/cache"
 import { useParams } from "next/navigation"
 
-export const Options = () => {
+export const Options = ({
+  newChat,
+}: {
+  newChat: boolean
+}) => {
   const options = [
     "List activities to help hot flashes",
     "What are the phases of menopause?",
@@ -22,12 +27,18 @@ export const Options = () => {
       {options.map((val, idx) => (
         <form
           key={idx}
-          action={() =>
+          action={async () => {
             completeChatInteraction({
               message: val,
               chatId: params.chatId as string,
             })
-          }
+            if (newChat) {
+              await setChatTitle({
+                chatId: params.chatId as string,
+                title: val,
+              })
+            }
+          }}
         >
           <button
             type="submit"

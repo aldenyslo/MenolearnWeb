@@ -39,3 +39,49 @@ export async function getUserIdByChatId(
   })
   return userId
 }
+
+export async function getChatsByUserId(
+  userId: string
+) {
+  const chats = await prismadb.chat.findMany({
+    where: {
+      userId,
+    },
+  })
+
+  return chats
+}
+
+export async function getChatWithMsgsByChatId(
+  chatId: string
+) {
+  const chat = await prismadb.chat.findUnique({
+    where: {
+      id: chatId,
+    },
+    include: {
+      messages: true,
+    },
+  })
+
+  return chat
+}
+
+export async function getNewChatStatus(
+  chatId: string
+) {
+  const newChat = await prismadb.chat.findUnique({
+    where: {
+      id: chatId,
+    },
+    select: {
+      newChat: true,
+    },
+  })
+
+  if (!newChat) {
+    throw new Error("invalid chat status")
+  }
+
+  return newChat.newChat
+}

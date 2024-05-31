@@ -1,10 +1,10 @@
 import ChatHistoryCard from "@/components/ChatHistoryCard"
-import { ChatHistoryItem } from "@/server/interfaces"
+import { Chat } from "@prisma/client"
 
 const ChatHistoryList = ({
   chatHistory,
 }: {
-  chatHistory: ChatHistoryItem[]
+  chatHistory: Chat[]
 }) => {
   return (
     <ul className="grid gap-6">

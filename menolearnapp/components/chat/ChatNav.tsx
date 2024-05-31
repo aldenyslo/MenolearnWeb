@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export const ChatNav = () => {
   return (
-    <nav>
+    <header>
       <Link href="/">
         <Image
           src="/left-chevron.svg"
@@ -12,6 +12,6 @@ export const ChatNav = () => {
           alt="back button"
         />
       </Link>
-    </nav>
+    </header>
   )
 }

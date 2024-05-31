@@ -5,16 +5,20 @@ import * as z from "zod"
 import Image from "next/image"
 import { useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
-import { useMutation } from "@tanstack/react-query"
-import { Source } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { chatInputSchema } from "@/lib/schemas"
 import {
   chatComplete,
   chatInput,
+  setChatStatus,
+  setChatTitle,
 } from "@/server/actions"
 
-const ChatInput = () => {
+const ChatInput = ({
+  newChat,
+}: {
+  newChat: boolean
+}) => {
   const params = useParams()
 
   const {
@@ -49,6 +53,10 @@ const ChatInput = () => {
       message: data.input,
       chatId,
     })
+
+    if (newChat) {
+      await setChatTitle({ chatId, title: data.input })
+    }
   }
 
   return (

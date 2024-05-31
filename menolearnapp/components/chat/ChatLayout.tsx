@@ -3,20 +3,17 @@ import BotDialogue from "@/components/chat/BotDialogue"
 import UserDialogue from "@/components/chat/UserDialogue"
 import { Options } from "@/components/chat/Options"
 import Image from "next/image"
-import { Source } from "@prisma/client"
+import { Chat, Message, Source } from "@prisma/client"
 import { useEffect, useRef } from "react"
+import { setChatTitle } from "@/server/actions"
 
-interface ChatLayoutProps {
-  messages: {
-    id: string
-    date: Date
-    source: Source
-    message: string
-    chatId: string
-  }[]
-}
-
-const ChatLayout = ({ messages }: ChatLayoutProps) => {
+const ChatLayout = ({
+  messages,
+  newChat,
+}: {
+  messages: Message[]
+  newChat: boolean
+}) => {
   const chatBottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -25,7 +22,6 @@ const ChatLayout = ({ messages }: ChatLayoutProps) => {
         behavior: "smooth",
       })
     }
-    console.log("useeffect")
   }, [messages])
 
   return (
@@ -53,7 +49,7 @@ const ChatLayout = ({ messages }: ChatLayoutProps) => {
             alt="menolearn logo"
             className="mx-auto"
           />
-          <Options />
+          <Options newChat={newChat} />
         </>
       )}
       <div ref={chatBottomRef}></div>

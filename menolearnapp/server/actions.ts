@@ -173,12 +173,11 @@ export const chatInput = async (
         chatId,
       },
     })
+
     revalidateTag("chat")
   } catch (err) {
     console.log("[MESSAGES_POST]", err)
-    return new NextResponse("Internal error", {
-      status: 500,
-    })
+    throw new Error("Internal error")
   }
 }
 
@@ -204,9 +203,7 @@ export const chatComplete = async (
     revalidateTag("chat")
   } catch (err) {
     console.log("[MESSAGES_POST]", err)
-    return new NextResponse("Internal error", {
-      status: 500,
-    })
+    throw new Error("Internal error")
   }
 }
 
@@ -229,6 +226,55 @@ export const createNewChat = async (
     })
 
     return NextResponse.json(chat)
+  } catch (err) {
+    console.log("[CHATS_POST]", err)
+    return new NextResponse("Internal error", {
+      status: 500,
+    })
+  }
+}
+
+export const setChatTitle = async ({
+  chatId,
+  title,
+}: {
+  chatId: string
+  title: string
+}) => {
+  try {
+    await prismadb.chat.update({
+      where: {
+        id: chatId,
+      },
+      data: {
+        title,
+      },
+    })
+    await setChatStatus({ chatId, status: false })
+  } catch (err) {
+    console.log("[CHATS_POST]", err)
+    return new NextResponse("Internal error", {
+      status: 500,
+    })
+  }
+}
+
+export const setChatStatus = async ({
+  chatId,
+  status,
+}: {
+  chatId: string
+  status: boolean
+}) => {
+  try {
+    await prismadb.chat.update({
+      where: {
+        id: chatId,
+      },
+      data: {
+        newChat: status,
+      },
+    })
   } catch (err) {
     console.log("[CHATS_POST]", err)
     return new NextResponse("Internal error", {
