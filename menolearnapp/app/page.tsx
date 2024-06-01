@@ -17,7 +17,7 @@ export default async function Home() {
   )
 
   return (
-    <main className="bg-gradient-to-b h-screen">
+    <main className="bg-gradient-to-b min-h-screen border border-red-600">
       <header>
         <form
           action={async () => {
@@ -42,7 +42,7 @@ export default async function Home() {
         </div>
         <NewChatBtn user={session.user} />
       </section>
-      <section className="p-5 grid gap-6 ">
+      <section className="p-5 grid gap-6 overflow-y-auto">
         <h2 className=" text-2xl text-secondary-600">
           Chat History
         </h2>

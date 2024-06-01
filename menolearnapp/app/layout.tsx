@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body
-          className={`${poppins.variable} border-2 h-screen scroll-smooth font-poppins text-blue-800 from-grey-100 from-60% to-blue-100 to-100%`}
+          className={`${poppins.variable} border-2 scroll-smooth font-poppins text-blue-800 from-grey-100 from-60% to-blue-100 to-100%`}
         >
           {children}
         </body>

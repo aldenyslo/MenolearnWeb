@@ -12,8 +12,7 @@ import {
 import { AuthError } from "next-auth"
 import { getUserByEmail } from "@/server/queries"
 import bcrypt from "bcryptjs"
-import prismadb from "@/lib/prismadb"
-import { redirect } from "next/navigation"
+import prisma from "@/lib/prismadb"
 import { NextResponse } from "next/server"
 import {
   revalidatePath,
@@ -37,6 +36,7 @@ export const login = async (
       password,
       redirectTo: "/",
     })
+    return { success: "Successful sign in" }
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -61,13 +61,17 @@ export const registerAction = async (
     return { error: "Invalid fields!" }
   }
 
-  const { email, password, name } =
+  const { email, password, name, passwordConf } =
     validatedFields.data
 
   const existingUser = await getUserByEmail(email)
 
   if (existingUser) {
-    throw new Error("Email already in use")
+    return { error: "Email already in use" }
+  }
+
+  if (password != passwordConf) {
+    return { error: "Passwords do not match" }
   }
 
   const hashedPassword = await bcrypt.hash(
@@ -75,7 +79,7 @@ export const registerAction = async (
     10
   )
 
-  const user = await prismadb.user.create({
+  const user = await prisma.user.create({
     data: {
       name,
       email,
@@ -89,6 +93,7 @@ export const registerAction = async (
       password,
       redirectTo: "/",
     })
+    return { success: "Successful registration" }
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -166,7 +171,7 @@ export const chatInput = async (
   const { message, chatId } = result.data
 
   try {
-    const msg = await prismadb.message.create({
+    const msg = await prisma.message.create({
       data: {
         source: "USER",
         message,
@@ -193,7 +198,7 @@ export const chatComplete = async (
   const { message, chatId } = result.data
 
   try {
-    const msg = await prismadb.message.create({
+    const msg = await prisma.message.create({
       data: {
         source: "BOT",
         message: await getBotResponse(message),
@@ -219,7 +224,7 @@ export const createNewChat = async (
   userId: string
 ) => {
   try {
-    const chat = await prismadb.chat.create({
+    const chat = await prisma.chat.create({
       data: {
         userId,
       },
@@ -242,15 +247,15 @@ export const setChatTitle = async ({
   title: string
 }) => {
   try {
-    await prismadb.chat.update({
+    await prisma.chat.update({
       where: {
         id: chatId,
       },
       data: {
         title,
+        newChat: false,
       },
     })
-    await setChatStatus({ chatId, status: false })
   } catch (err) {
     console.log("[CHATS_POST]", err)
     return new NextResponse("Internal error", {
@@ -259,26 +264,26 @@ export const setChatTitle = async ({
   }
 }
 
-export const setChatStatus = async ({
-  chatId,
-  status,
-}: {
-  chatId: string
-  status: boolean
-}) => {
-  try {
-    await prismadb.chat.update({
-      where: {
-        id: chatId,
-      },
-      data: {
-        newChat: status,
-      },
-    })
-  } catch (err) {
-    console.log("[CHATS_POST]", err)
-    return new NextResponse("Internal error", {
-      status: 500,
-    })
-  }
-}
+// export const setChatStatus = async ({
+//   chatId,
+//   status,
+// }: {
+//   chatId: string
+//   status: boolean
+// }) => {
+//   try {
+//     await prismadb.chat.update({
+//       where: {
+//         id: chatId,
+//       },
+//       data: {
+//         newChat: status,
+//       },
+//     })
+//   } catch (err) {
+//     console.log("[CHATS_POST]", err)
+//     return new NextResponse("Internal error", {
+//       status: 500,
+//     })
+//   }
+// }

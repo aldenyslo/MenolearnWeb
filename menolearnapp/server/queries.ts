@@ -1,10 +1,10 @@
 "use server"
 
-import prismadb from "@/lib/prismadb"
+import prisma from "@/lib/prismadb"
 
 export async function getChatMessages(chatId: string) {
   console.log("get chat msgs")
-  const messages = await prismadb.message.findMany({
+  const messages = await prisma.message.findMany({
     where: {
       chatId,
     },
@@ -17,9 +17,19 @@ export async function getChatMessages(chatId: string) {
 }
 
 export async function getUserByEmail(email: string) {
-  const user = await prismadb.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       email,
+    },
+  })
+
+  return user
+}
+
+export async function getUserById(id: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
     },
   })
 
@@ -29,7 +39,7 @@ export async function getUserByEmail(email: string) {
 export async function getUserIdByChatId(
   chatId: string
 ) {
-  const userId = await prismadb.chat.findUnique({
+  const userId = await prisma.chat.findUnique({
     where: {
       id: chatId,
     },
@@ -43,7 +53,7 @@ export async function getUserIdByChatId(
 export async function getChatsByUserId(
   userId: string
 ) {
-  const chats = await prismadb.chat.findMany({
+  const chats = await prisma.chat.findMany({
     where: {
       userId,
     },
@@ -55,7 +65,7 @@ export async function getChatsByUserId(
 export async function getChatWithMsgsByChatId(
   chatId: string
 ) {
-  const chat = await prismadb.chat.findUnique({
+  const chat = await prisma.chat.findUnique({
     where: {
       id: chatId,
     },
@@ -70,7 +80,7 @@ export async function getChatWithMsgsByChatId(
 export async function getNewChatStatus(
   chatId: string
 ) {
-  const newChat = await prismadb.chat.findUnique({
+  const newChat = await prisma.chat.findUnique({
     where: {
       id: chatId,
     },

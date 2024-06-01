@@ -4,7 +4,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import bcrypt from "bcryptjs"
 import { LoginSchema } from "@/lib/schemas"
 import prismadb from "./lib/prismadb"
-import { getUserByEmail } from "@/server/queries"
+import {
+  getUserByEmail,
+  getUserById,
+} from "@/server/queries"
 import type { Provider } from "next-auth/providers"
 
 const providers: Provider[] = [

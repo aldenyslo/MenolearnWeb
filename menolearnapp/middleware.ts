@@ -7,8 +7,7 @@ export default auth((req) => {
   const reqUrl = new URL(req.url)
   if (
     !req.auth &&
-    reqUrl?.pathname !== "/auth/signin" &&
-    reqUrl?.pathname !== "/auth/register"
+    !reqUrl?.pathname.startsWith("/auth")
   ) {
     return NextResponse.redirect(
       new URL(

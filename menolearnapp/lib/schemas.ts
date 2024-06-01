@@ -11,13 +11,18 @@ export const messageSchema = z.object({
 
 export const LoginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1),
+  password: z
+    .string()
+    .min(1, { message: "Password is required" }),
 })
 
 export const RegisterSchema = z.object({
-  name: z.string(),
+  name: z
+    .string()
+    .min(1, { message: "Name is required" }),
   email: z.string().email(),
   password: z.string().min(8),
+  passwordConf: z.string().min(8),
 })
 
 // export const chatCompletionSchema = z.object({

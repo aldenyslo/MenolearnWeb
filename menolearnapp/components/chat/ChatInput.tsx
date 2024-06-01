@@ -10,7 +10,7 @@ import { chatInputSchema } from "@/lib/schemas"
 import {
   chatComplete,
   chatInput,
-  setChatStatus,
+  //   setChatStatus,
   setChatTitle,
 } from "@/server/actions"
 
@@ -53,6 +53,7 @@ const ChatInput = ({
       message: data.input,
       chatId,
     })
+    console.log(newChat)
 
     if (newChat) {
       await setChatTitle({ chatId, title: data.input })
