@@ -3,7 +3,6 @@ import ChatHistoryList from "../components/ChatHistoryList"
 import { auth, signIn, signOut } from "@/auth"
 import { redirect } from "next/navigation"
 import { getChatsByUserId } from "@/server/queries"
-import { completeChat } from "@/server/openai"
 
 export default async function Home() {
   const session = await auth()

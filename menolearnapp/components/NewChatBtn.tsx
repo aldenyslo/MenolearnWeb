@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { redirect, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { completeChat } from "@/server/openai"
+// import { completeChat } from "@/server/openai"
 
 const NewChatBtn = ({ user }: { user: User }) => {
   const router = useRouter()
@@ -29,7 +29,7 @@ const NewChatBtn = ({ user }: { user: User }) => {
 
   return (
     <div className="grid">
-      <button onClick={completeChat}>test</button>
+      {/* <button onClick={completeChat}>test</button> */}
       <Button
         onClick={() => chatMutation.mutate()}
         className="font-bold text-pink-400 bg-grey-100 hover:bg-gray-200 rounded-xl mx-16 text-center"
