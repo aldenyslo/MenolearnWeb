@@ -49,8 +49,6 @@ const ChatInput = ({
   const onSubmit = async (
     data: z.infer<typeof chatInputSchema>
   ) => {
-    console.log(data)
-
     await chatInput({
       message: data.input,
       chatId,
@@ -62,7 +60,6 @@ const ChatInput = ({
       message: data.input,
       chatId,
     })
-    console.log(newChat)
 
     if (newChat) {
       await setChatTitle({ chatId, title: data.input })

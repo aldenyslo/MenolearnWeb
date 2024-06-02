@@ -18,6 +18,7 @@ import {
   revalidatePath,
   revalidateTag,
 } from "next/cache"
+import { completeChat } from "./openai"
 
 export const login = async (
   values: z.infer<typeof LoginSchema>
@@ -108,45 +109,17 @@ export const registerAction = async (
   }
 }
 
-const getBotResponse = async (input: String) => {
-  const apiKey = process.env.OPENAI_APIKEY
-  const generalModelId = process.env.MODEL_ID
-
+const getBotResponse = async (input: string) => {
   try {
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: generalModelId,
-          messages: [{ role: "user", content: input }],
-        }),
-      }
-    )
+    const response = await completeChat(input)
 
-    if (!response.ok) {
+    if (!response) {
       throw new Error(
-        `HTTP error! status: ${response.status}`
+        "Failed to get response from OpenAI"
       )
     }
-
-    const responseData = await response.json()
-
-    // const validatedResponse =
-    //   chatCompletionSchema.safeParse(responseData)
-
-    // console.log("here2")
-
-    // if (!validatedResponse.success) {
-    //   console.log("here3")
-    //   throw new Error("Invalid OpenAI response")
-    // }
-
-    return responseData.choices[0].message.content
+    console.log(response)
+    return response
   } catch (error) {
     console.error(
       "Error sending message to OpenAI:",
@@ -171,7 +144,7 @@ export const chatInput = async (
   const { message, chatId } = result.data
 
   try {
-    const msg = await prisma.message.create({
+    await prisma.message.create({
       data: {
         source: "USER",
         message,
@@ -198,7 +171,7 @@ export const chatComplete = async (
   const { message, chatId } = result.data
 
   try {
-    const msg = await prisma.message.create({
+    await prisma.message.create({
       data: {
         source: "BOT",
         message: await getBotResponse(message),
@@ -215,7 +188,6 @@ export const chatComplete = async (
 export const completeChatInteraction = async (
   values: z.infer<typeof messageSchema>
 ) => {
-  console.log("chat interaction")
   await chatInput(values)
   await chatComplete(values)
 }

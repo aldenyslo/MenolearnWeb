@@ -17,7 +17,7 @@ export default async function Home() {
   )
 
   return (
-    <main className="bg-gradient-to-b min-h-screen border border-red-600">
+    <main className="bg-gradient-to-b min-h-screen">
       <header>
         <form
           action={async () => {

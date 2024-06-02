@@ -3,7 +3,6 @@
 import prisma from "@/lib/prismadb"
 
 export async function getChatMessages(chatId: string) {
-  console.log("get chat msgs")
   const messages = await prisma.message.findMany({
     where: {
       chatId,
@@ -12,7 +11,6 @@ export async function getChatMessages(chatId: string) {
       date: "asc",
     },
   })
-  //   console.log(messages)
   return messages
 }
 
