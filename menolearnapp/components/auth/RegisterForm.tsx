@@ -11,24 +11,34 @@ import { AuthOther } from "@/components/auth/AuthOther"
 import { redirect } from "next/navigation"
 import ErrorMessage from "../ErrorMessage"
 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition()
   const [overallError, setOverallError] = useState<
     string | undefined
   >("")
 
-  const {
-    handleSubmit,
-    register,
-    formState: { isValid, isDirty, errors },
-  } = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-  })
+  const form = useForm<z.infer<typeof RegisterSchema>>(
+    {
+      resolver: zodResolver(RegisterSchema),
+      defaultValues: {
+        name: "",
+        email: "",
+        password: "",
+      },
+    }
+  )
 
   const onSubmit = (
     values: z.infer<typeof RegisterSchema>
@@ -38,11 +48,100 @@ export const RegisterForm = () => {
         setOverallError(res.error)
       })
     })
+    setOverallError("")
   }
 
   return (
     <div>
-      <form
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 mb-4"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isPending}
+                    placeholder="Name"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isPending}
+                    placeholder="Email"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isPending}
+                    placeholder="Password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="passwordConf"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm password</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isPending}
+                    placeholder="Confirm password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {overallError ? (
+            <ErrorMessage message={overallError} />
+          ) : null}
+          <Button
+            type="submit"
+            className="bg-purple-200 hover:bg-purple-400"
+          >
+            Register
+          </Button>
+        </form>
+      </Form>
+      {/* <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid gap-9 mb-3"
       >
@@ -101,7 +200,9 @@ export const RegisterForm = () => {
             type="password"
             className="rounded-3xl p-2.5 border border-blue-100"
           />
-          <ErrorMessage message={overallError} />
+          {overallError ? (
+            <ErrorMessage message={overallError} />
+          ) : null}
         </div>
         <button
           type="submit"
@@ -112,7 +213,7 @@ export const RegisterForm = () => {
         >
           Continue
         </button>
-      </form>
+      </form> */}
 
       <AuthOther
         href="/auth/signin"

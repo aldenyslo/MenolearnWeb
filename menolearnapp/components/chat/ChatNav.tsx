@@ -1,16 +1,12 @@
 import Image from "next/image"
+import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 
 export const ChatNav = () => {
   return (
     <header>
       <Link href="/">
-        <Image
-          src="/left-chevron.svg"
-          width="24"
-          height="24"
-          alt="back button"
-        />
+        <ChevronLeft className="h-6 w-6" />
       </Link>
     </header>
   )

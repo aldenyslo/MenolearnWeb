@@ -14,6 +14,18 @@ import {
   setChatTitle,
 } from "@/server/actions"
 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
 const ChatInput = ({
   newChat,
 }: {
@@ -21,12 +33,9 @@ const ChatInput = ({
 }) => {
   const params = useParams()
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isDirty },
-  } = useForm<z.infer<typeof chatInputSchema>>({
+  const form = useForm<
+    z.infer<typeof chatInputSchema>
+  >({
     resolver: zodResolver(chatInputSchema),
     defaultValues: { input: "" },
   })
@@ -47,7 +56,7 @@ const ChatInput = ({
       chatId,
     })
 
-    reset()
+    form.reset()
 
     await chatComplete({
       message: data.input,
@@ -61,38 +70,51 @@ const ChatInput = ({
   }
 
   return (
-    <div className="flex items-center gap-3 w-full">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex items-center gap-3 grow"
-      >
-        <input
-          {...register("input")}
-          type="text"
-          className="grow border border-blue-100 bg-white px-4 py-3 rounded-2xl"
-          placeholder="Ask me anything..."
-        />
-        <button
-          type="submit"
-          className="border border-blue-100 rounded-full"
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex gap-3"
         >
-          {isDirty ? (
-            <Image
-              src="/sendEnabled.svg"
-              width="28"
-              height="28"
-              alt="send enabled"
-            />
-          ) : (
-            <Image
-              src="/sendDisabled.svg"
-              width="28"
-              height="28"
-              alt="send disabled"
-            />
-          )}
-        </button>
-      </form>
+          <FormField
+            control={form.control}
+            name="input"
+            render={({ field }) => (
+              <FormItem className="grow">
+                <FormControl className="">
+                  <Input
+                    placeholder="Ask me about menopause"
+                    type="text"
+                    {...field}
+                    className="rounded-xl "
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            className="border-0 bg-transparent hover:bg-transparent"
+          >
+            {form.formState.isDirty ? (
+              <Image
+                src="/sendEnabled.svg"
+                width="28"
+                height="28"
+                alt="send enabled"
+              />
+            ) : (
+              <Image
+                src="/sendDisabled.svg"
+                width="28"
+                height="28"
+                alt="send disabled"
+              />
+            )}
+          </Button>
+        </form>
+      </Form>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { Session, User } from "next-auth"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { redirect, useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
 
 const NewChatBtn = ({ user }: { user: User }) => {
   const router = useRouter()
@@ -26,14 +27,13 @@ const NewChatBtn = ({ user }: { user: User }) => {
   })
 
   return (
-    <div className="">
-      <Link
+    <div className="grid">
+      <Button
         onClick={() => chatMutation.mutate()}
-        href="/"
-        className="font-bold text-primary-400 bg-secondary-200 px-4 py-3 block text-center rounded-2xl mx-16"
+        className="font-bold text-pink-400 bg-grey-100 hover:bg-gray-200 rounded-xl mx-16 text-center"
       >
         Chat with MenoLearn
-      </Link>
+      </Button>
     </div>
   )
 }

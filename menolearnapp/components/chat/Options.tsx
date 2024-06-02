@@ -7,6 +7,7 @@ import {
 } from "@/server/actions"
 import { revalidateTag } from "next/cache"
 import { useParams } from "next/navigation"
+import { Button } from "@/components/ui/button"
 
 export const Options = ({
   newChat,
@@ -40,12 +41,12 @@ export const Options = ({
             }
           }}
         >
-          <button
+          <Button
             type="submit"
-            className="w-full text-left font-light text-sm bg-blue-250 hover:bg-blue-500 p-2 px-3 rounded-md"
+            className="w-full h-full text-wrap text-left text-blue-800 font-light text-sm bg-blue-250 hover:bg-blue-500 p-2 px-3 rounded-md"
           >
             {val}
-          </button>
+          </Button>
         </form>
       ))}
     </div>

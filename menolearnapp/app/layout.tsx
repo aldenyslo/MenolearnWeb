@@ -1,19 +1,15 @@
 import type { Metadata } from "next"
-import {
-  Inter,
-  Volkhov,
-  Josefin_Sans,
-  Poppins,
-} from "next/font/google"
+import { Poppins as FontSans } from "next/font/google"
 import "./globals.css"
 
 import Header from "@/components/Header"
 import Providers from "@/components/Providers"
+import { cn } from "@/lib/utils"
 
-const poppins = Poppins({
+const fontSans = FontSans({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-poppins",
+  variable: "--font-sans",
 })
 
 export const metadata: Metadata = {
@@ -31,7 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body
-          className={`${poppins.variable} border-2 scroll-smooth font-poppins text-blue-800 from-grey-100 from-60% to-blue-100 to-100%`}
+          className={cn(
+            "scroll-smooth font-sans text-blue-800 from-grey-100 from-60% to-blue-100 to-100%",
+            fontSans.variable
+          )}
         >
           {children}
         </body>

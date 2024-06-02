@@ -10,17 +10,25 @@ import { login } from "@/server/actions"
 import { AuthOther } from "@/components/auth/AuthOther"
 import ErrorMessage from "../ErrorMessage"
 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition()
   const [overallError, setOverallError] = useState<
     string | undefined
   >("")
 
-  const {
-    handleSubmit,
-    register,
-    formState: { isValid, isDirty, errors },
-  } = useForm<z.infer<typeof LoginSchema>>({
+  const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -36,56 +44,63 @@ export const LoginForm = () => {
         setOverallError(res.error)
       })
     })
+    setOverallError("")
   }
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid gap-9 mb-3"
-      >
-        <div className="grid gap-2">
-          <div className="grid">
-            <input
-              {...register("email", {
-                required: "Please enter your email",
-              })}
-              placeholder="Email"
-              disabled={isPending}
-              type="email"
-              className="rounded-3xl p-2.5 border border-blue-100"
-            />
-            <ErrorMessage
-              message={errors.email?.message}
-            />
-          </div>
-
-          <div className="grid">
-            <input
-              {...register("password", {
-                required: "Please enter your password",
-              })}
-              placeholder="Password"
-              disabled={isPending}
-              type="password"
-              className="rounded-3xl p-2.5 border border-blue-100"
-            />
-            <ErrorMessage
-              message={errors.password?.message}
-            />
-          </div>
-
-          <ErrorMessage message={overallError} />
-        </div>
-        <button
-          type="submit"
-          className={
-            "rounded-3xl text-white py-2.5 bg-purple-200 hover:bg-purple-400"
-          }
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 mb-4"
         >
-          Log in
-        </button>
-      </form>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isPending}
+                    placeholder="Email"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isPending}
+                    placeholder="Password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {overallError ? (
+            <ErrorMessage message={overallError} />
+          ) : null}
+          <Button
+            type="submit"
+            className="bg-purple-200 hover:bg-purple-400"
+          >
+            Sign in
+          </Button>
+        </form>
+      </Form>
 
       <AuthOther
         href="/auth/register"

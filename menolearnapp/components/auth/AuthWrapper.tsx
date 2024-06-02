@@ -10,7 +10,7 @@ export const AuthWrapper = ({
   children,
 }: CardWrapperProps) => {
   return (
-    <main className="grid gap-12 mx-16 w-full text-center">
+    <main className="grid w-full min-h-screen border bg-gradient-to-b p-16">
       <div className="text-center text-blue-800">
         <h1 className="font-semibold text-4xl">
           {title}

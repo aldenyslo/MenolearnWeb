@@ -29,7 +29,7 @@ export default async function Home() {
           <button type="submit">Sign out</button>
         </form>
       </header>
-      <section className="bg-primary-500 text-white grid items-center px-5 pb-6 pt-12 gap-4">
+      <section className="bg-blue-600 text-white grid items-center px-5 pb-6 pt-12 gap-4">
         <div className="grid gap-3.5">
           <h1 className="font-bold text-2xl">
             We know menopause is confusing.
