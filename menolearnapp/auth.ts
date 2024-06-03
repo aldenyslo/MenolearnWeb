@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import bcrypt from "bcryptjs"
 import { LoginSchema } from "@/lib/schemas"
-import prismadb from "./lib/prismadb"
+import prisma from "./lib/prismadb"
 import {
   getUserByEmail,
   getUserById,
@@ -52,7 +52,7 @@ export const providerMap = providers.map(
 
 export const { handlers, signIn, signOut, auth } =
   NextAuth({
-    adapter: PrismaAdapter(prismadb),
+    adapter: PrismaAdapter(prisma),
     session: { strategy: "jwt" },
     providers,
     pages: {
