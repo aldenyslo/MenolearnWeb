@@ -4,8 +4,9 @@ import { LoginForm } from "@/components/auth/LoginForm"
 const LoginPage = async () => {
   return (
     <AuthWrapper
-      title="Welcome back"
-      description="Glad to see you again!"
+      title="Welcome to MenoLearn"
+      description="Navigating Menopause Together —
+      Your Personal Guide for Every Step."
     >
       <LoginForm />
     </AuthWrapper>

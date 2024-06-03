@@ -4,7 +4,7 @@ import { RegisterForm } from "@/components/auth/RegisterForm"
 const RegisterPage = () => {
   return (
     <AuthWrapper
-      title="Welcome"
+      title="Welcome to MenoLearn"
       description="Ready to document your journey? We’re here to guide you every step of the way."
     >
       <RegisterForm />

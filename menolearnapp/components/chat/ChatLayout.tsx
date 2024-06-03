@@ -3,15 +3,14 @@ import BotDialogue from "@/components/chat/BotDialogue"
 import UserDialogue from "@/components/chat/UserDialogue"
 import { Options } from "@/components/chat/Options"
 import Image from "next/image"
-import { Chat, Message, Source } from "@prisma/client"
+import { Message, Role } from "@prisma/client"
 import { useEffect, useRef } from "react"
-import { setChatTitle } from "@/server/actions"
 
 const ChatLayout = ({
   messages,
   newChat,
 }: {
-  messages: Message[]
+  messages: { content: string; role: Role }[]
   newChat: boolean
 }) => {
   const chatBottomRef = useRef<HTMLDivElement>(null)
@@ -28,14 +27,14 @@ const ChatLayout = ({
     <div className="flex flex-col gap-5 flex-1 overflow-y-auto">
       {messages.length != 0 ? (
         messages.map((val, idx) =>
-          val.source == "BOT" ? (
+          val.role == "assistant" ? (
             <BotDialogue
-              response={val.message}
+              response={val.content}
               key={idx}
             />
           ) : (
             <UserDialogue
-              userInput={val.message}
+              userInput={val.content}
               key={idx}
             />
           )

@@ -4,32 +4,31 @@ import * as z from "zod"
 
 import Image from "next/image"
 import { useForm } from "react-hook-form"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { chatInputSchema } from "@/lib/schemas"
 import {
   chatComplete,
   chatInput,
-  //   setChatStatus,
   setChatTitle,
 } from "@/server/actions"
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Message, Role } from "@prisma/client"
 
 const ChatInput = ({
   newChat,
+  messages,
 }: {
   newChat: boolean
+  messages: { content: string; role: Role }[]
 }) => {
   const params = useParams()
 
@@ -50,16 +49,19 @@ const ChatInput = ({
     data: z.infer<typeof chatInputSchema>
   ) => {
     await chatInput({
-      message: data.input,
+      content: data.input,
       chatId,
     })
 
     form.reset()
 
-    await chatComplete({
-      message: data.input,
-      chatId,
-    })
+    await chatComplete(
+      {
+        content: data.input,
+        chatId,
+      },
+      messages
+    )
 
     if (newChat) {
       await setChatTitle({ chatId, title: data.input })

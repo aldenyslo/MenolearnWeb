@@ -1,4 +1,5 @@
 "use server"
+import { Message, Role } from "@prisma/client"
 import OpenAI from "openai"
 
 const openai = new OpenAI({
@@ -6,15 +7,12 @@ const openai = new OpenAI({
   organization: process.env.OPENAI_ORG,
 })
 
-export async function completeChat(userInput: string) {
+export async function completeChat(
+  messages: { role: Role; content: string }[]
+) {
   const completion =
     await openai.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: userInput,
-        },
-      ],
+      messages: messages,
       model: process.env.MODEL_ID as string,
     })
 

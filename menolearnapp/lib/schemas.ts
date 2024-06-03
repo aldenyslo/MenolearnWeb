@@ -5,7 +5,7 @@ export const chatInputSchema = z.object({
 })
 
 export const messageSchema = z.object({
-  message: z.string().min(1).max(1000),
+  content: z.string().min(1).max(1000),
   chatId: z.string(),
 })
 

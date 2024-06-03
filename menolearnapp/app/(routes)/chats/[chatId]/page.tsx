@@ -43,7 +43,10 @@ const Chat = async ({
         messages={messages}
         newChat={newChat}
       />
-      <ChatInput newChat={newChat} />
+      <ChatInput
+        newChat={newChat}
+        messages={messages}
+      />
     </main>
   )
 }

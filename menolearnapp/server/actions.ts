@@ -19,6 +19,7 @@ import {
   revalidateTag,
 } from "next/cache"
 import { completeChat } from "./openai"
+import { Role } from "@prisma/client"
 
 export const login = async (
   values: z.infer<typeof LoginSchema>
@@ -109,9 +110,11 @@ export const registerAction = async (
   }
 }
 
-const getBotResponse = async (input: string) => {
+const getBotResponse = async (
+  messages: { content: string; role: Role }[]
+) => {
   try {
-    const response = await completeChat(input)
+    const response = await completeChat(messages)
 
     if (!response) {
       throw new Error(
@@ -141,13 +144,13 @@ export const chatInput = async (
     throw new Error("Invalid input")
   }
 
-  const { message, chatId } = result.data
+  const { content, chatId } = result.data
 
   try {
     await prisma.message.create({
       data: {
-        source: "USER",
-        message,
+        role: "user",
+        content,
         chatId,
       },
     })
@@ -160,7 +163,8 @@ export const chatInput = async (
 }
 
 export const chatComplete = async (
-  values: z.infer<typeof messageSchema>
+  values: z.infer<typeof messageSchema>,
+  messages: { content: string; role: Role }[]
 ) => {
   const result = messageSchema.safeParse(values)
 
@@ -168,13 +172,15 @@ export const chatComplete = async (
     throw new Error("Invalid input")
   }
 
-  const { message, chatId } = result.data
+  const { content, chatId } = result.data
+
+  messages.push({ content, role: "user" })
 
   try {
     await prisma.message.create({
       data: {
-        source: "BOT",
-        message: await getBotResponse(message),
+        role: "assistant",
+        content: await getBotResponse(messages),
         chatId,
       },
     })
@@ -185,12 +191,12 @@ export const chatComplete = async (
   }
 }
 
-export const completeChatInteraction = async (
-  values: z.infer<typeof messageSchema>
-) => {
-  await chatInput(values)
-  await chatComplete(values)
-}
+// export const completeChatInteraction = async (
+//   values: z.infer<typeof messageSchema>
+// ) => {
+//   await chatInput(values)
+//   await chatComplete(values)
+// }
 
 export const createNewChat = async (
   userId: string
@@ -235,27 +241,3 @@ export const setChatTitle = async ({
     })
   }
 }
-
-// export const setChatStatus = async ({
-//   chatId,
-//   status,
-// }: {
-//   chatId: string
-//   status: boolean
-// }) => {
-//   try {
-//     await prismadb.chat.update({
-//       where: {
-//         id: chatId,
-//       },
-//       data: {
-//         newChat: status,
-//       },
-//     })
-//   } catch (err) {
-//     console.log("[CHATS_POST]", err)
-//     return new NextResponse("Internal error", {
-//       status: 500,
-//     })
-//   }
-// }

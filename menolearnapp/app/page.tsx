@@ -3,6 +3,14 @@ import ChatHistoryList from "../components/ChatHistoryList"
 import { auth, signIn, signOut } from "@/auth"
 import { redirect } from "next/navigation"
 import { getChatsByUserId } from "@/server/queries"
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 export default async function Home() {
   const session = await auth()
@@ -18,16 +26,34 @@ export default async function Home() {
 
   return (
     <main className="bg-gradient-to-b min-h-screen">
-      <header>
-        <form
-          action={async () => {
-            "use server"
+      <header className="flex justify-between items-center w-full py-2 px-4">
+        <p className="text-lg font-semibold">
+          MenoLearn
+        </p>
+        <Popover>
+          <PopoverTrigger>
+            <Image
+              src="/profile.svg"
+              height="32"
+              width="32"
+              alt="profile"
+            />
+          </PopoverTrigger>
+          <PopoverContent className="space-y-2 border border-blue-600">
+            <p>Hello, {session.user.name}</p>
+            <form
+              action={async () => {
+                "use server"
 
-            await signOut()
-          }}
-        >
-          <button type="submit">Sign out</button>
-        </form>
+                await signOut()
+              }}
+            >
+              <Button variant="outline" type="submit">
+                Sign out
+              </Button>
+            </form>
+          </PopoverContent>
+        </Popover>
       </header>
       <section className="bg-blue-600 text-white grid items-center px-5 pb-6 pt-12 gap-4">
         <div className="grid gap-3.5">

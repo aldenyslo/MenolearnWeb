@@ -10,6 +10,10 @@ export async function getChatMessages(chatId: string) {
     orderBy: {
       date: "asc",
     },
+    select: {
+      content: true,
+      role: true,
+    },
   })
   return messages
 }

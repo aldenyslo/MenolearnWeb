@@ -2,7 +2,6 @@
 import {
   chatComplete,
   chatInput,
-  completeChatInteraction,
   setChatTitle,
 } from "@/server/actions"
 import { revalidateTag } from "next/cache"
@@ -29,10 +28,18 @@ export const Options = ({
         <form
           key={idx}
           action={async () => {
-            completeChatInteraction({
-              message: val,
+            await chatInput({
+              content: val,
               chatId: params.chatId as string,
             })
+
+            await chatComplete(
+              {
+                content: val,
+                chatId: params.chatId as string,
+              },
+              []
+            )
             if (newChat) {
               await setChatTitle({
                 chatId: params.chatId as string,

@@ -13,16 +13,17 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-enum Source {
-    USER
-    BOT
+enum Role {
+    user
+    assistant
+    system
 }
 
 model Message {
     id      String   @id @default(uuid())
     date    DateTime @default(now())
-    source  Source
-    message String
+    role    Role
+    content String
     chatId  String
     chat    Chat     @relation(fields: [chatId], references: [id])
 }
