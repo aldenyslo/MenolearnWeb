@@ -121,7 +121,6 @@ const getBotResponse = async (
         "Failed to get response from OpenAI"
       )
     }
-    console.log(response)
     return response
   } catch (error) {
     console.error(
@@ -137,7 +136,6 @@ const getBotResponse = async (
 export const chatInput = async (
   values: z.infer<typeof messageSchema>
 ) => {
-  console.log(values)
   const result = messageSchema.safeParse(values)
 
   if (!result.success) {

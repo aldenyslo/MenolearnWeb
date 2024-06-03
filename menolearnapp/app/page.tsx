@@ -15,7 +15,6 @@ import {
 export default async function Home() {
   const session = await auth()
 
-  console.log({ session })
   if (!session || !session.user || !session.user.id) {
     redirect("/auth/signin")
   }
