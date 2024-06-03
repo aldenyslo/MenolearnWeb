@@ -1,4 +1,4 @@
-import prismadb from "@/lib/prismadb"
+import prisma from "@/lib/prismadb"
 import { NextResponse } from "next/server"
 
 export async function POST(req: Request) {
@@ -6,7 +6,7 @@ export async function POST(req: Request) {
 
   const { userId, newChat } = body
   try {
-    const chat = await prismadb.chat.create({
+    const chat = await prisma.chat.create({
       data: {
         userId,
         newChat,
